@@ -1,0 +1,6 @@
+This snap includes software from the following projects:
+
+- llama.cpp (MIT License)
+- GLM-4.7 Flash Model (Apache 2.0 / MIT)
+- inference-snaps-cli
+- inference-snaps-webui
