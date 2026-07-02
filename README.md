@@ -49,22 +49,3 @@ snapcraft pack -v
 ```
 
 Refer to the `./dev` directory for additional development tools.
-
-## Pack a snap with AI agents
-Clone the [inference-snaps-sdk](https://github.com/canonical/inference-snaps-sdk) and build it:
-
-```shell
-git clone https://github.com/canonical/inference-snaps-sdk.git
-cd inference-snaps-sdk
-sdkcraft try
-```
-
-Then you can start the `workshop` environment and pack your snap with AI agents:
-
-```shell
-workshop launch
-workshop shell
-opencode
-```
-
-Choose the preferred LLM in opencode and prompt `start packing` to pack your snap with AI agents.

@@ -106,7 +106,7 @@ parts:
       ln --symbolic ./modelctl bin/glm-4-7-flash
 
       craftctl default
-
+    
   cli-dependencies:
     plugin: nil
     stage-packages:
@@ -121,7 +121,7 @@ parts:
     override-build: |
       mkdir -p $CRAFT_PART_INSTALL/usr/bin
       cp /usr/bin/nvidia-smi $CRAFT_PART_INSTALL/usr/bin/
-
+      
       license_dir=$CRAFT_PART_INSTALL/usr/share/doc/nvidia-utils-580/
       mkdir -p $license_dir
       cp /usr/share/doc/nvidia-utils-580/copyright $license_dir/
@@ -149,7 +149,7 @@ parts:
     plugin: dump
     organize:
       "*": runtimes/
-
+  
   scripts:
     source: scripts
     plugin: dump
@@ -159,7 +159,6 @@ parts:
       "server.sh": bin/
       "server-webui.sh": bin/
       "export-shared-configs.sh": bin/
-      "completion.bash": bin/
 
   local-component-files:
      # Use the cmake plugin instead of "dump" to prevent unwanted copies
@@ -230,7 +229,7 @@ components:
     type: standard
     summary: llama.cpp using default CPU instruction sets
     description: LLM inference in C/C++
-
+  
   llamacpp-cuda:
     type: standard
     summary: llama.cpp with CUDA backend
@@ -239,7 +238,7 @@ components:
 apps:
   glm-4-7-flash:
     command: bin/glm-4-7-flash
-    completer: bin/completion.bash
+    completer: bin/snap-completer.bash
     plugs:
       - hardware-observe
       - opengl
