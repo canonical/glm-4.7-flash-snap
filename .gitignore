@@ -5,7 +5,7 @@ prime/
 stage/
 *.gguf
 .venv/
-
+.workshop.lock
 # Snapcraft build state
 .craft/
 
