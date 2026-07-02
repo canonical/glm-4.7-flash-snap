@@ -6,6 +6,9 @@ stage/
 *.gguf
 .venv/
 
+# Snapcraft build state
+.craft/
+
 # Build tooling fetched by the Makefile (llama-gguf-split)
 .tools/
 
