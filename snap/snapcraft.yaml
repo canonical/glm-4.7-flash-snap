@@ -209,6 +209,7 @@ parts:
       mkdir -p $license_dir
       cp NOTICE $license_dir/
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
+      cp $SNAPCRAFT_PROJECT_DIR/LICENSE-glm4.7flash $license_dir/
 
 components:
   model-glm47flash-q4km-1-of-4: &model
