@@ -25,15 +25,12 @@ jobs:
             provision-data: "distro: noble"
             select-engine: cpu
             test-chat-tps: true
-            test-image-prompt: false
 
           - job-queue: anbox-nvidia-amd64
             provision-data: "distro: noble"
             install-nvidia-driver-version: 595
             select-engine: nvidia-gpu
             test-chat-tps: true
-            expected-tps: 9.4
-            test-image-prompt: false
 
     uses: canonical/inference-snaps-testing/.github/workflows/test-snap.yaml@v1
     secrets: inherit
@@ -41,7 +38,7 @@ jobs:
       job-queue: ${{ matrix.jobs.job-queue }}
       provision-data: ${{ matrix.jobs.provision-data }}
 
-      snap-name: glm4-7
+      snap-name: glm-4-7-flash
       snap-channel: ${{ inputs.snap-channel }}
 
       install-nvidia-driver-version: ${{ matrix.jobs.install-nvidia-driver-version }}

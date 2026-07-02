@@ -1,20 +1,25 @@
 name: cpu
-description: llama.cpp CPU inference for GLM-4.7 Flash
+summary: CPU-optimized for workstations
+description: |
+  This engine uses llama.cpp.
+
+  It is optimized for both amd64 and arm64 CPU architectures, for a wide range
+  of architecture variants.
 vendor: Canonical Ltd
-grade: stable
+
 devices:
   anyof:
     - type: cpu
       architecture: amd64
     - type: cpu
       architecture: arm64
-memory: 6G
-disk-space: 24G
-components:
-  - llamacpp
-  - model-glm4-7-flash-q4-k-m-1-of-4
-  - model-glm4-7-flash-q4-k-m-2-of-4
-  - model-glm4-7-flash-q4-k-m-3-of-4
-  - model-glm4-7-flash-q4-k-m-4-of-4
+
+runtime: llamacpp
+
+model:
+  default: glm47flash-q4km-gguf
+  options:
+    - glm47flash-q4km-gguf
+
 configurations:
   sleep-idle-seconds: 600

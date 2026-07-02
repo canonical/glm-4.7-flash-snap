@@ -1,0 +1,36 @@
+id: glm47flash-q4km-gguf
+name: glm-4-7-flash
+
+description: GLM-4.7-Flash, a 30B-A3B mixture-of-experts instruction-tuned model with reasoning and tool-calling
+model-card-url: https://huggingface.co/unsloth/GLM-4.7-Flash-GGUF
+quantization: Q4_K_M
+
+disk-size: 18312M
+
+capabilities:
+  - text
+  - thinking
+  - tools
+
+components:
+  - model-glm47flash-q4km-1-of-4
+  - model-glm47flash-q4km-2-of-4
+  - model-glm47flash-q4km-3-of-4
+  - model-glm47flash-q4km-4-of-4
+
+environment:
+  # All shards are symlinked into a single directory (see layout below) so that
+  # llama-server can auto-discover shards 2..4 when pointed at shard 1.
+  - SHARDS_DIR=/tmp/glm47flash-q4km-shards
+  - MODEL_FILE=$SHARDS_DIR/GLM-4.7-Flash-Q4_K_M-00001-of-00004.gguf
+  - MODEL_NAME=glm-4-7-flash
+
+layout:
+  $SHARDS_DIR/GLM-4.7-Flash-Q4_K_M-00001-of-00004.gguf:
+    symlink: $SNAP_COMPONENTS/model-glm47flash-q4km-1-of-4/GLM-4.7-Flash-Q4_K_M-00001-of-00004.gguf
+  $SHARDS_DIR/GLM-4.7-Flash-Q4_K_M-00002-of-00004.gguf:
+    symlink: $SNAP_COMPONENTS/model-glm47flash-q4km-2-of-4/GLM-4.7-Flash-Q4_K_M-00002-of-00004.gguf
+  $SHARDS_DIR/GLM-4.7-Flash-Q4_K_M-00003-of-00004.gguf:
+    symlink: $SNAP_COMPONENTS/model-glm47flash-q4km-3-of-4/GLM-4.7-Flash-Q4_K_M-00003-of-00004.gguf
+  $SHARDS_DIR/GLM-4.7-Flash-Q4_K_M-00004-of-00004.gguf:
+    symlink: $SNAP_COMPONENTS/model-glm47flash-q4km-4-of-4/GLM-4.7-Flash-Q4_K_M-00004-of-00004.gguf

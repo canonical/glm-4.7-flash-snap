@@ -4,3 +4,10 @@ parts/
 prime/
 stage/
 *.gguf
+.venv/
+
+# Build tooling fetched by the Makefile (llama-gguf-split)
+.tools/
+
+# Dev tools submodule
+dev/
