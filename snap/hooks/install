@@ -11,12 +11,12 @@ exec 2> >(logger --stderr --priority error --tag=$tag)
 # Set generic config
 #
 
-modelctl set --package http.port="4894"
+modelctl set --package http.port="8354"
 modelctl set --package http.host="127.0.0.1"
 modelctl set --package verbose="false"
 
 # Webui server config
-modelctl set --package webui.http.port="4895"
+modelctl set --package webui.http.port="8355"
 modelctl set --package webui.http.host="127.0.0.1"
 
 

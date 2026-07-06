@@ -1,8 +1,15 @@
 # GLM 4.7 Flash inference snap
+[![glm-4-7-flash](https://snapcraft.io/glm-4-7-flash/badge.svg)](https://snapcraft.io/glm-4-7-flash)
 
-Available engines:
-* nvidia-gpu
-* cpu
+Install [GLM 4.7 Flash](https://huggingface.co/inference-snaps/GLM-4.7-Flash-30B-A3B-Q4_K_M-5GB), optimized directly for your hardware.
+This package deploys a high-performance runtime for local inference across arm and x86 platforms. It runs efficiently on pure CPU or leverages CUDA-enabled NVIDIA GPU acceleration.
+
+Before starting, install the necessary [drivers](https://documentation.ubuntu.com/inference-snaps/how-to/setup/drivers/) for your accelerator.
+
+| Engine | Arch | Description |
+|--------------|--------------|-------------|
+| cpu | amd64, arm64 | Optimized for several CPU variants (x86, armv8, armv9) |
+| nvidia-gpu | amd64, arm64 | CUDA-enabled GPU acceleration |
 
 #### Install
 ```
@@ -13,13 +20,13 @@ sudo snap install glm-4-7-flash
 glm-4-7-flash --help
 ```
 
-
-#### Default ports
-| Configuration |              |
-|---------------|--------------|
-| http server   | 4894         |
-| webui server  | 4895         |
-| http host     | 127.0.0.1    |
+#### Default configurations
+| Key | Value |
+|-----|-------|
+| http.port | 4894 |
+| http.host | 127.0.0.1 |
+| webui.http.port | 4895 |
+| webui.http.host | 127.0.0.1 |
 
 ## Resources
 
@@ -36,14 +43,9 @@ Clone this repo with its submodules:
 git clone --recurse-submodules https://github.com/canonical/glm-4.7-flash-snap
 ```
 
-Download the model and split it into shards (the Q4_K_M GGUF is ~18 GB and must
-be split so each component stays under the 5 GB Store limit):
-```shell
-make download-models
-make split-model
-```
+Prepare the required models by running `make download-models`.
 
-Build the snap and its components:
+Build the snap and its component:
 ```shell
 snapcraft pack -v
 ```

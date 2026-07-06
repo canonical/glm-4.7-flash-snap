@@ -91,7 +91,7 @@ parts:
       # Do nothing. This significantly reduces build time when sourcing large files.
     override-build: |
       set -eo pipefail
-      cli_version=$($CRAFT_STAGE/bin/glm-4-7-flash version --format=json | jq .cli --raw-output)
+      cli_version=$($CRAFT_STAGE/bin/modelctl version --format=json | jq .cli --raw-output)
       git_hash=$(git -C "$SNAPCRAFT_PROJECT_DIR" describe --always)
       craftctl set version="${cli_version#v}+${git_hash}"
 
@@ -169,10 +169,10 @@ parts:
 
       cp -rf --archive --link --no-dereference ${CRAFT_PART_SRC}/* ${CRAFT_PART_INSTALL}
     organize:
-      "model-glm47flash-q4km-1-of-4/*": (component/model-glm47flash-q4km-1-of-4)
-      "model-glm47flash-q4km-2-of-4/*": (component/model-glm47flash-q4km-2-of-4)
-      "model-glm47flash-q4km-3-of-4/*": (component/model-glm47flash-q4km-3-of-4)
-      "model-glm47flash-q4km-4-of-4/*": (component/model-glm47flash-q4km-4-of-4)
+      "model-q4-k-m-gguf-1-of-4/*": (component/model-q4-k-m-gguf-1-of-4)
+      "model-q4-k-m-gguf-2-of-4/*": (component/model-q4-k-m-gguf-2-of-4)
+      "model-q4-k-m-gguf-3-of-4/*": (component/model-q4-k-m-gguf-3-of-4)
+      "model-q4-k-m-gguf-4-of-4/*": (component/model-q4-k-m-gguf-4-of-4)
 
     prime:
       # Exclude everything not explicitly organized
@@ -209,21 +209,21 @@ parts:
       mkdir -p $license_dir
       cp NOTICE $license_dir/
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
-      cp $SNAPCRAFT_PROJECT_DIR/LICENSE-glm4.7flash $license_dir/
+      cp $SNAPCRAFT_PROJECT_DIR/LICENSE-glm4.7-flash $license_dir/
 
 components:
-  model-glm47flash-q4km-1-of-4: &model
+  model-q4-k-m-gguf-1-of-4: &model
     type: standard
     summary: GLM 4.7 Flash Q4_K_M GGUF (shard 1 of 4)
     description: Model weights for GLM-4.7-Flash in GGUF format, quantized to Q4_K_M (shard 1 of 4)
 
-  model-glm47flash-q4km-2-of-4:
+  model-q4-k-m-gguf-2-of-4:
     <<: *model
 
-  model-glm47flash-q4km-3-of-4:
+  model-q4-k-m-gguf-3-of-4:
     <<: *model
 
-  model-glm47flash-q4km-4-of-4:
+  model-q4-k-m-gguf-4-of-4:
     <<: *model
 
   llamacpp:
@@ -255,7 +255,6 @@ apps:
       - network-bind
       - hardware-observe
       - opengl
-      - process-control
       - home
 
   server-webui:
