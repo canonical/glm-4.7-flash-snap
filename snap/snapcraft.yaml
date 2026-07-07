@@ -185,8 +185,13 @@ parts:
       - on arm64: https://github.com/canonical/llama.cpp-builds/releases/download/b9611/llamacpp-arm64.tar.gz
     stage-packages:
       - libgomp1
+    override-build: |
+      # Move license files to be included in the snap, not the component
+      mkdir -p $CRAFT_PRIME/usr/share/doc/
+      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp
+
+      craftctl default
     organize:
-      "licenses": usr/share/doc/llama.cpp # Add licenses to the snap
       "*": (component/llamacpp)
 
   llamacpp-cuda:
@@ -196,8 +201,13 @@ parts:
       - on arm64: https://github.com/canonical/llama.cpp-builds/releases/download/b9611/llamacpp-arm64+cuda12.9.tar.gz
     stage-packages:
       - libgomp1
+    override-build: |
+      # Move license files to be included in the snap, not the component
+      mkdir -p $CRAFT_PRIME/usr/share/doc/
+      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-cuda
+
+      craftctl default
     organize:
-      "licenses": usr/share/doc/llama.cpp+cuda # Add licenses to the snap
       "*": (component/llamacpp-cuda)
 
   notice:
@@ -238,7 +248,7 @@ components:
 
 apps:
   glm-4-7-flash:
-    command: bin/glm-4-7-flash
+    command: bin/modelctl
     completer: bin/snap-completer.bash
     plugs:
       - hardware-observe
