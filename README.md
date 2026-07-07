@@ -23,9 +23,9 @@ glm-4-7-flash --help
 #### Default configurations
 | Key | Value |
 |-----|-------|
-| http.port | 4894 |
+| http.port | 8354 |
 | http.host | 127.0.0.1 |
-| webui.http.port | 4895 |
+| webui.http.port | 8355 |
 | webui.http.host | 127.0.0.1 |
 
 ## Resources
