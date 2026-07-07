@@ -6,6 +6,7 @@ This package deploys a high-performance runtime for local inference across arm a
 
 Before starting, install the necessary [drivers](https://documentation.ubuntu.com/inference-snaps/how-to/setup/drivers/) for your accelerator.
 
+#### Optimizations
 | Engine | Arch | Description |
 |--------------|--------------|-------------|
 | cpu | amd64, arm64 | Optimized for several CPU variants (x86, armv8, armv9) |
