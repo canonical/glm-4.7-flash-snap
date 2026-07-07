@@ -1,5 +1,5 @@
-id: glm47flash-q4km-gguf
-name: glm-4-7-flash
+id: q4-k-m-gguf
+name: 30b
 description: GLM-4.7-Flash, a 30B-A3B mixture-of-experts instruction-tuned model with reasoning and tool-calling
 model-card-url: https://huggingface.co/unsloth/GLM-4.7-Flash-GGUF
 quantization: Q4_K_M

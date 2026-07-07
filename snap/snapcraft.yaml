@@ -54,10 +54,11 @@ slots:
       read:
         - &owui-share $SNAP_DATA/share/open-webui
 
-plugs:
+# plugs:
+  # TODO: Add once the store permissions are in place.
   # To allow side-loading models into server (root daemon) from user home directory
-  home:
-    read: all
+  # home:
+   # read: all
 
 environment:
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
@@ -219,13 +220,13 @@ parts:
       mkdir -p $license_dir
       cp NOTICE $license_dir/
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
-      cp $SNAPCRAFT_PROJECT_DIR/LICENSE-glm4.7-flash $license_dir/
+      cp $SNAPCRAFT_PROJECT_DIR/LICENSE-glm-4.7-flash $license_dir/  
 
 components:
   model-q4-k-m-gguf-1-of-4: &model
     type: standard
-    summary: GLM 4.7 Flash Q4_K_M GGUF (shard 1 of 4)
-    description: Model weights for GLM-4.7-Flash in GGUF format, quantized to Q4_K_M (shard 1 of 4)
+    summary: GLM 4.7 Flash Q4_K_M GGUF  
+    description: Model weights for GLM-4.7-Flash in GGUF format, quantized to Q4_K_M
 
   model-q4-k-m-gguf-2-of-4:
     <<: *model

@@ -17,9 +17,9 @@ devices:
 runtime: llamacpp
 
 model:
-  default: glm47flash-q4km-gguf
+  default: q4-k-m-gguf
   options:
-    - glm47flash-q4km-gguf
+    - q4-k-m-gguf
 
 configurations:
   sleep-idle-seconds: 600
