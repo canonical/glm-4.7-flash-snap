@@ -1,0 +1,275 @@
+name: glm-4-7-flash
+base: core24
+summary: GLM 4.7 Flash inference snap
+description: |
+  This is an inference snap that lets you run GLM-4.7-Flash, a 30B-A3B
+  mixture-of-experts instruction-tuned model with reasoning and tool-calling
+  capabilities.
+
+  Before you start, make sure to have the necessary drivers installed on the host:
+  https://documentation.ubuntu.com/inference-snaps/how-to/install-drivers/
+
+  **Install:**
+
+  `sudo snap install glm-4-7-flash`
+
+  **Get help:**
+
+  `glm-4-7-flash --help`
+
+  **Licensing:**
+
+  The GLM-4.7-Flash model is provided under the MIT license:
+  https://huggingface.co/unsloth/GLM-4.7-Flash-GGUF
+
+  The licenses of all bundled software can be found inside the snap at `/snap/glm-4-7-flash/current/usr/share/doc`.
+
+website: https://documentation.ubuntu.com/inference-snaps
+source-code: https://github.com/canonical/glm-4.7-flash-snap
+issues: https://github.com/canonical/inference-snaps/issues
+
+adopt-info: version
+
+grade: stable
+confinement: strict
+compression: lzo
+
+assumes:
+  - snapd2.68 # for components support
+
+platforms:
+  amd64:
+  arm64:
+
+slots:
+  status:
+    interface: content
+    source:
+      read:
+        - &status-share $SNAP_DATA/share/status
+  open-webui:
+    interface: content
+    content: open-webui-config
+    source:
+      read:
+        - &owui-share $SNAP_DATA/share/open-webui
+
+# plugs:
+  # TODO: Add once the store permissions are in place.
+  # To allow side-loading models into server (root daemon) from user home directory
+  # home:
+   # read: all
+
+environment:
+  SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
+  ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
+  STATUS_SHARE: *status-share # Status directory shared via content interface
+  OWUI_SHARE: *owui-share # Open WebUI config directory shared via content interface
+
+layout:
+  # Under wsl the libraries are expected in /usr/lib/wsl
+  /usr/lib/wsl:
+    bind: $SNAP_COMMON/usr/lib/wsl
+
+hooks:
+  install:
+    plugs: &install-plugs
+      # For hardware detection
+      - hardware-observe
+      - opengl
+  post-refresh:
+    plugs: *install-plugs
+
+parts:
+  version:
+    after: [cli]
+    plugin: nil
+    source: . # To regenerate the git hash on every change
+    build-packages:
+      - jq
+      - git
+    override-pull: |
+      # Do nothing. This significantly reduces build time when sourcing large files.
+    override-build: |
+      set -eo pipefail
+      cli_version=$($CRAFT_STAGE/bin/modelctl version --format=json | jq .cli --raw-output)
+      git_hash=$(git -C "$SNAPCRAFT_PROJECT_DIR" describe --always)
+      craftctl set version="${cli_version#v}+${git_hash}"
+
+  cli:
+    source:
+      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v2.0.0-beta.5/inference-snaps-cli-linux-amd64.tar.xz
+      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v2.0.0-beta.5/inference-snaps-cli-linux-arm64.tar.xz
+    plugin: dump
+    override-build: |
+
+      # For tab completion
+      ln --symbolic ./modelctl bin/glm-4-7-flash
+
+      craftctl default
+    
+  cli-dependencies:
+    plugin: nil
+    stage-packages:
+      - pciutils # lspci
+
+  # Used for NVIDIA vRAM and CUDA Capability detection.
+  # Only the binary is included to avoid staging libraries, which should instead be provided by the host through the opengl interface.
+  cli-nvidia-smi:
+    plugin: nil
+    build-packages:
+      - nvidia-utils-580
+    override-build: |
+      mkdir -p $CRAFT_PART_INSTALL/usr/bin
+      cp /usr/bin/nvidia-smi $CRAFT_PART_INSTALL/usr/bin/
+      
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/nvidia-utils-580/
+      mkdir -p $license_dir
+      cp /usr/share/doc/nvidia-utils-580/copyright $license_dir/
+
+  webui:
+    plugin: dump
+    source: https://github.com/canonical/inference-snaps-webui/releases/download/v1.0.0/inference-snaps-webui.tar.xz
+    organize:
+      "*": webui/
+
+  engines:
+    source: engines
+    plugin: dump
+    organize:
+      "*": engines/
+
+  models:
+    source: models
+    plugin: dump
+    organize:
+      "*": models/
+
+  runtimes:
+    source: runtimes
+    plugin: dump
+    organize:
+      "*": runtimes/
+  
+  scripts:
+    source: scripts
+    plugin: dump
+    stage-packages:
+      - jq
+    organize:
+      "server.sh": bin/
+      "server-webui.sh": bin/
+      "export-shared-configs.sh": bin/
+
+  local-component-files:
+     # Use the cmake plugin instead of "dump" to prevent unwanted copies
+     # See https://github.com/canonical/craft-parts/issues/1609
+    plugin: cmake
+    source: components
+    override-build: |
+
+      cp -rf --archive --link --no-dereference ${CRAFT_PART_SRC}/* ${CRAFT_PART_INSTALL}
+    organize:
+      "model-q4-k-m-gguf-1-of-4/*": (component/model-q4-k-m-gguf-1-of-4)
+      "model-q4-k-m-gguf-2-of-4/*": (component/model-q4-k-m-gguf-2-of-4)
+      "model-q4-k-m-gguf-3-of-4/*": (component/model-q4-k-m-gguf-3-of-4)
+      "model-q4-k-m-gguf-4-of-4/*": (component/model-q4-k-m-gguf-4-of-4)
+
+    prime:
+      # Exclude everything not explicitly organized
+      - -*
+
+  llamacpp:
+    plugin: dump
+    source:
+      - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b9611/llamacpp-amd64.tar.gz
+      - on arm64: https://github.com/canonical/llama.cpp-builds/releases/download/b9611/llamacpp-arm64.tar.gz
+    stage-packages:
+      - libgomp1
+    override-build: |
+      # Move license files to be included in the snap, not the component
+      mkdir -p $CRAFT_PRIME/usr/share/doc/
+      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp
+
+      craftctl default
+    organize:
+      "*": (component/llamacpp)
+
+  llamacpp-cuda:
+    plugin: dump
+    source:
+      - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b9611/llamacpp-amd64+cuda12.9.tar.gz
+      - on arm64: https://github.com/canonical/llama.cpp-builds/releases/download/b9611/llamacpp-arm64+cuda12.9.tar.gz
+    stage-packages:
+      - libgomp1
+    override-build: |
+      # Move license files to be included in the snap, not the component
+      mkdir -p $CRAFT_PRIME/usr/share/doc/
+      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-cuda
+
+      craftctl default
+    organize:
+      "*": (component/llamacpp-cuda)
+
+  notice:
+    plugin: nil
+    source: NOTICE
+    source-type: file
+    override-build: |
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc
+      mkdir -p $license_dir
+      cp NOTICE $license_dir/
+      cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
+      cp $SNAPCRAFT_PROJECT_DIR/LICENSE-glm-4.7-flash $license_dir/  
+
+components:
+  model-q4-k-m-gguf-1-of-4: &model
+    type: standard
+    summary: GLM 4.7 Flash Q4_K_M GGUF  
+    description: Model weights for GLM-4.7-Flash in GGUF format, quantized to Q4_K_M
+
+  model-q4-k-m-gguf-2-of-4:
+    <<: *model
+
+  model-q4-k-m-gguf-3-of-4:
+    <<: *model
+
+  model-q4-k-m-gguf-4-of-4:
+    <<: *model
+
+  llamacpp:
+    type: standard
+    summary: llama.cpp using default CPU instruction sets
+    description: LLM inference in C/C++
+  
+  llamacpp-cuda:
+    type: standard
+    summary: llama.cpp with CUDA backend
+    description: LLM inference in C/C++
+
+apps:
+  glm-4-7-flash:
+    command: bin/modelctl
+    completer: bin/snap-completer.bash
+    plugs:
+      - hardware-observe
+      - opengl
+      - network
+      - desktop # To open the webui in the browser
+    environment:
+      ADDITIONAL_FEATURES: chat, webui
+
+  server:
+    command: bin/server.sh
+    daemon: simple
+    plugs:
+      - network-bind
+      - hardware-observe
+      - opengl
+      - home
+
+  server-webui:
+    command: bin/server-webui.sh
+    daemon: simple
+    plugs:
+      - network-bind
