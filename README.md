@@ -6,6 +6,7 @@ This package deploys a high-performance runtime for local inference across arm a
 
 Before starting, install the necessary [drivers](https://documentation.ubuntu.com/inference-snaps/how-to/setup/drivers/) for your accelerator.
 
+#### Optimizations
 | Engine | Arch | Description |
 |--------------|--------------|-------------|
 | cpu | amd64, arm64 | Optimized for several CPU variants (x86, armv8, armv9) |
@@ -23,9 +24,9 @@ glm-4-7-flash --help
 #### Default configurations
 | Key | Value |
 |-----|-------|
-| http.port | 4894 |
+| http.port | 8354 |
 | http.host | 127.0.0.1 |
-| webui.http.port | 4895 |
+| webui.http.port | 8355 |
 | webui.http.host | 127.0.0.1 |
 
 ## Resources
