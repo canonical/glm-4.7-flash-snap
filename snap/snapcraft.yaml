@@ -54,11 +54,10 @@ slots:
       read:
         - &owui-share $SNAP_DATA/share/open-webui
 
-# plugs:
-  # TODO: Add once the store permissions are in place.
+plugs:
   # To allow side-loading models into server (root daemon) from user home directory
-  # home:
-   # read: all
+  home:
+    read: all
 
 environment:
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
