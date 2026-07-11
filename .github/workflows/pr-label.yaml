@@ -27,7 +27,6 @@ jobs:
           ["amd64", "large", "noble", "self-hosted"],
           ["arm64", "large", "noble", "self-hosted"]
         ]
-      build-init-script: 'download-models.sh'
       test-jobs-matrix: |
         [
           {
