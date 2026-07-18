@@ -1,8 +1,7 @@
-id: q4-k-m-gguf
-name: 30b
+name: glm-4.7-flash-30b-a3b
 description: GLM-4.7-Flash, a 30B-A3B mixture-of-experts instruction-tuned model with reasoning and tool-calling
 model-card-url: https://huggingface.co/unsloth/GLM-4.7-Flash-GGUF
-quantization: Q4_K_M
+quantization: q4-k-m
 
 disk-size: 18312M
 
