@@ -19,9 +19,9 @@ devices:
 runtime: llamacpp-cuda
 
 model:
-  default: q4-k-m-gguf
+  default: glm-4.7-flash-30b-a3b
   options:
-    - q4-k-m-gguf
+    - glm-4.7-flash-30b-a3b
 
 configurations:
   sleep-idle-seconds: 600
