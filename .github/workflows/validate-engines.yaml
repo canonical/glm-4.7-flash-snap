@@ -20,7 +20,7 @@ jobs:
           ref: v2.0.0-beta.5 # Keep in sync with the CLI version in snap/snapcraft.yaml
 
       - name: Set up Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@v7
         with:
           go-version: '1.26.x'
 
