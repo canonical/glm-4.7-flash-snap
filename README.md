@@ -42,6 +42,7 @@ glm-4-7-flash --help
 Clone the repo:
 ```shell
 git clone https://github.com/canonical/glm-4.7-flash-snap
+cd glm-4.7-flash-snap
 ```
 
 Initialize the development environment:
