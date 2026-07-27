@@ -6,12 +6,6 @@ hf := pipx run --spec "huggingface_hub[cli]" hf
 SNAP_NAME ?= glm-4-7-flash
 ENGINE ?= cpu
 
-MODEL_REPO := inference-snaps/GLM-4.7-Flash-30B-A3B-Q4_K_M-5GB
-MODEL_BASENAME := GLM-4.7-Flash-Q4_K_M
-COMPONENT_DIR := components
-MODEL_SLUG := q4-k-m-gguf
-N_SHARDS := 4
-
 .PHONY: all help init build install upload smoke-test install-deps init-submodules download-models
 
 all: help
@@ -61,15 +55,16 @@ init-submodules:
 		git submodule update --init; \
 	fi
 
-# Download the pre-sharded GGUF files directly into their per-component shard directories.
+# Download the split GGUF files directly into their per-component directories.
 download-models:
 	@echo "Downloading GLM-4.7-Flash-Q4_K_M model weights..."
-	@total=$$(printf "%05d" "$(N_SHARDS)"); \
-	for i in $$(seq 1 $(N_SHARDS)); do \
-		shard_num=$$(printf "%05d" "$$i"); \
-		shard_file="$(MODEL_BASENAME)-$${shard_num}-of-$${total}.gguf"; \
-		dir="$(COMPONENT_DIR)/model-$(MODEL_SLUG)-$$i-of-$(N_SHARDS)"; \
+	@parts=4; \
+	total=$$(printf "%05d" "$$parts"); \
+	for i in $$(seq 1 $$parts); do \
+		part_num=$$(printf "%05d" "$$i"); \
+		part_file="GLM-4.7-Flash-Q4_K_M-$${part_num}-of-$${total}.gguf"; \
+		dir="components/model-q4-k-m-gguf-$$i-of-$$parts"; \
 		mkdir -p "$$dir"; \
-		echo "Downloading $$shard_file -> $$dir"; \
-		$(hf) download "$(MODEL_REPO)" "$$shard_file" --local-dir "$$dir"; \
+		echo "Downloading $$part_file -> $$dir"; \
+		$(hf) download inference-snaps/GLM-4.7-Flash-30B-A3B-Q4_K_M-5GB "$$part_file" --local-dir "$$dir"; \
 	done
