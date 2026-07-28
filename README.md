@@ -39,16 +39,21 @@ glm-4-7-flash --help
 
 ## Build and install from source
 
-Clone this repo with its submodules:
+Clone the repo:
 ```shell
-git clone --recurse-submodules https://github.com/canonical/glm-4.7-flash-snap
+git clone https://github.com/canonical/glm-4.7-flash-snap
+cd glm-4.7-flash-snap
 ```
 
-Prepare the required models by running `make download-models`.
-
-Build the snap and its component:
+Initialize the development environment:
 ```shell
-snapcraft pack -v
+make init
+```
+
+Build and install snap:
+```shell
+make build
+make install
 ```
 
 Refer to the `./dev` directory for additional development tools.
