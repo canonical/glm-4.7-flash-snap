@@ -161,18 +161,17 @@ parts:
       "export-shared-configs.sh": bin/
 
   local-component-files:
-     # Use the cmake plugin instead of "dump" to prevent unwanted copies
-     # See https://github.com/canonical/craft-parts/issues/1609
+    # Use the cmake plugin instead of "dump" to prevent unwanted copies
+    # See https://github.com/canonical/craft-parts/issues/1609
     plugin: cmake
     source: components
     override-build: |
-
       cp -rf --archive --link --no-dereference ${CRAFT_PART_SRC}/* ${CRAFT_PART_INSTALL}
     organize:
-      "model-q4-k-m-gguf-1-of-4/*": (component/model-q4-k-m-gguf-1-of-4)
-      "model-q4-k-m-gguf-2-of-4/*": (component/model-q4-k-m-gguf-2-of-4)
-      "model-q4-k-m-gguf-3-of-4/*": (component/model-q4-k-m-gguf-3-of-4)
-      "model-q4-k-m-gguf-4-of-4/*": (component/model-q4-k-m-gguf-4-of-4)
+      "model-q4-k-m-gguf-1-of-4/GLM-4.7-Flash-Q4_K_M-00001-of-00004.gguf": (component/model-q4-k-m-gguf-1-of-4)
+      "model-q4-k-m-gguf-2-of-4/GLM-4.7-Flash-Q4_K_M-00002-of-00004.gguf": (component/model-q4-k-m-gguf-2-of-4)
+      "model-q4-k-m-gguf-3-of-4/GLM-4.7-Flash-Q4_K_M-00003-of-00004.gguf": (component/model-q4-k-m-gguf-3-of-4)
+      "model-q4-k-m-gguf-4-of-4/GLM-4.7-Flash-Q4_K_M-00004-of-00004.gguf": (component/model-q4-k-m-gguf-4-of-4)
 
     prime:
       # Exclude everything not explicitly organized

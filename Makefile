@@ -55,16 +55,7 @@ init-submodules:
 		git submodule update --init; \
 	fi
 
-# Download the split GGUF files directly into their per-component directories.
 download-models:
 	@echo "Downloading GLM-4.7-Flash-Q4_K_M model weights..."
-	@parts=4; \
-	total=$$(printf "%05d" "$$parts"); \
-	for i in $$(seq 1 $$parts); do \
-		part_num=$$(printf "%05d" "$$i"); \
-		part_file="GLM-4.7-Flash-Q4_K_M-$${part_num}-of-$${total}.gguf"; \
-		dir="components/model-q4-k-m-gguf-$$i-of-$$parts"; \
-		mkdir -p "$$dir"; \
-		echo "Downloading $$part_file -> $$dir"; \
-		$(hf) download inference-snaps/GLM-4.7-Flash-30B-A3B-Q4_K_M-5GB "$$part_file" --local-dir "$$dir"; \
-	done
+	$(hf) download inference-snaps/GLM-4.7-Flash-30B-A3B-Q4_K_M-5GB \
+		--local-dir components/model-q4-k-m-gguf; \
