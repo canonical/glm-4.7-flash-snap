@@ -21,7 +21,6 @@ environment:
   # llama-server can auto-discover shards 2..4 when pointed at shard 1.
   - SHARDS_DIR=/tmp/glm47flash-q4km-shards
   - MODEL_FILE=$SHARDS_DIR/GLM-4.7-Flash-Q4_K_M-00001-of-00004.gguf
-  - MODEL_NAME=glm-4.7-flash
 
 layout:
   $SHARDS_DIR/GLM-4.7-Flash-Q4_K_M-00001-of-00004.gguf:
