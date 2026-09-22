@@ -1,33 +1,29 @@
 # GLM 4.7 Flash inference snap
 [![glm-4-7-flash](https://snapcraft.io/glm-4-7-flash/badge.svg)](https://snapcraft.io/glm-4-7-flash)
 
-Install [GLM 4.7 Flash](https://huggingface.co/inference-snaps/GLM-4.7-Flash-30B-A3B-Q4_K_M-5GB), optimized directly for your hardware.
-This package deploys a high-performance runtime for local inference across arm and x86 platforms. It runs efficiently on pure CPU or leverages CUDA-enabled NVIDIA GPU acceleration.
+GLM-4.7-Flash is Zhipu AI's 30B-A3B mixture-of-experts instruction-tuned model with reasoning and tool-calling capabilities.
 
-Before starting, install the necessary [drivers](https://documentation.ubuntu.com/inference-snaps/how-to/setup/drivers/) for your accelerator.
+Use this snap to quickly install an optimized environment for local inference with GLM 4.7 Flash.
 
-#### Optimizations
-| Engine | Arch | Description |
-|--------------|--------------|-------------|
-| cpu | amd64, arm64 | Optimized for several CPU variants (x86, armv8, armv9) |
-| nvidia-gpu | amd64, arm64 | CUDA-enabled GPU acceleration |
+The snap includes the following hardware-optimized inference engines:
+
+* cpu: Optimized for x64 and ARM (armv8, armv9) CPUs
+* nvidia-gpu: CUDA-enabled GPU acceleration
+
+The most suitable engine is automatically selected based on the available hardware.
 
 #### Install
-```
+```shell
 sudo snap install glm-4-7-flash
 ```
-#### Use
-```
-glm-4-7-flash --help
+
+#### Run
+```shell
+glm-4-7-flash
 ```
 
-#### Default configurations
-| Key | Value |
-|-----|-------|
-| http.port | 8354 |
-| http.host | 127.0.0.1 |
-| webui.http.port | 8355 |
-| webui.http.host | 127.0.0.1 |
+> [!TIP]
+> Some accelerators require extra [drivers](https://documentation.ubuntu.com/inference-snaps/how-to/setup/drivers/) to be usable with this snap.
 
 ## Resources
 
@@ -55,5 +51,3 @@ Build and install snap:
 make build
 make install
 ```
-
-Refer to the `./dev` directory for additional development tools.
