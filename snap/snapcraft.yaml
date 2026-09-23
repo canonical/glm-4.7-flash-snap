@@ -1,29 +1,42 @@
 name: glm-4-7-flash
+title: GLM 4.7 Flash
 base: core24
-summary: GLM 4.7 Flash inference snap
+summary: Local AI with GLM 4.7 Flash inference snap
 description: |
-  This is an inference snap that lets you run GLM-4.7-Flash, a 30B-A3B
-  mixture-of-experts instruction-tuned model with reasoning and tool-calling
-  capabilities.
+  GLM-4.7-Flash is Zhipu AI's 30B-A3B mixture-of-experts instruction-tuned
+  model with reasoning and tool-calling capabilities.
 
-  Before you start, make sure to have the necessary drivers installed on the host:
-  https://documentation.ubuntu.com/inference-snaps/how-to/install-drivers/
+  Use this snap to quickly install an optimized environment for local
+  inference with GLM 4.7 Flash.
+
+  The snap includes the following hardware-optimized inference engines:
+
+  * cpu: Optimized for x64 and ARM (armv8, armv9) CPUs
+  * nvidia-gpu: CUDA-enabled GPU acceleration
+
+  The most suitable engine is automatically selected based on the available
+  hardware.
 
   **Install:**
 
   `sudo snap install glm-4-7-flash`
 
-  **Get help:**
+  **Run:**
 
-  `glm-4-7-flash --help`
+  `glm-4-7-flash`
 
-  **Licensing:**
+  Some accelerators require extra drivers to be usable with this snap:
+  https://documentation.ubuntu.com/inference-snaps/how-to/setup/drivers/
 
-  The GLM-4.7-Flash model is provided under the MIT license:
+  **License:**
+
+  The GLM-4.7-Flash model is provided by Zhipu AI under the MIT license:
   https://huggingface.co/unsloth/GLM-4.7-Flash-GGUF
 
-  The licenses of all bundled software can be found inside the snap at `/snap/glm-4-7-flash/current/usr/share/doc`.
+  The licenses of all the bundled software can be found after installing the snap at
+  `/snap/glm-4-7-flash/current/usr/share/doc`.
 
+icon: snap/gui/icon-256.png
 website: https://documentation.ubuntu.com/inference-snaps
 source-code: https://github.com/canonical/glm-4.7-flash-snap
 issues: https://github.com/canonical/inference-snaps/issues
@@ -263,3 +276,9 @@ apps:
     daemon: simple
     plugs:
       - network-bind
+
+lint:
+  ignore:
+    - metadata:
+      - license
+      - contact
