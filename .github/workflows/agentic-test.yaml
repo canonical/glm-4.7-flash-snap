@@ -11,8 +11,17 @@ on:
 jobs:
   ai-test:
     # GitHub-hosted runners have 16GB RAM, which is not enough for this model
-    runs-on: [self-hosted, large, amd64]
+    runs-on: [self-hosted, large, noble, amd64]
     steps:
+      # Workshop (used by the agentic test) needs an LXD ZFS storage pool
+      - name: Load ZFS kernel module
+        run: |
+          uname -a
+          sudo apt-get update
+          sudo apt-get install -y zfsutils-linux
+          sudo modprobe zfs
+          lsmod | grep zfs
+
       - name: Run test
         uses: canonical/inference-snaps-dev/.github/actions/agentic-test@v2
         with:
