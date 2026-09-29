@@ -3,6 +3,10 @@ name: Agentic Snap Test
 on:
   schedule:
     - cron: "50 6 * * 3" # Weekly on Wednesday
+  push:
+    branches:
+      - IENG-2625-increase-runner-ram-for-agentic-tests # TODO: remove before merging
+  workflow_dispatch:
 
 jobs:
   ai-test:
@@ -14,6 +18,6 @@ jobs:
         with:
           snap-name: glm-4-7-flash
           snap-channel: beta
-          create-issues: true
+          create-issues: false # TODO: set back to true before merging
           openrouter-api-key: ${{ secrets.OPENROUTER_API_KEY }}
           issue-create-token: ${{ secrets.ISSUE_CREATE_TOKEN }}
