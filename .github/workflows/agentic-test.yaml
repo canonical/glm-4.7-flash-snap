@@ -6,7 +6,8 @@ on:
 
 jobs:
   ai-test:
-    runs-on: ubuntu-latest
+    # GitHub-hosted runners have 16GB RAM, which is not enough for this model
+    runs-on: [self-hosted, large, amd64]
     steps:
       - name: Run test
         uses: canonical/inference-snaps-dev/.github/actions/agentic-test@v2
