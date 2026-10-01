@@ -3,11 +3,25 @@ name: Agentic Snap Test
 on:
   schedule:
     - cron: "50 6 * * 3" # Weekly on Wednesday
+  workflow_dispatch:
 
 jobs:
   ai-test:
-    runs-on: ubuntu-latest
+    # GitHub-hosted runners have 16GB RAM and
+    # GLM-4.7-Flash-30B-A3B Q4_K_M  can't fit (~18GB)
+    # so we use a large self-hosted runner (32GB RAM) to
+    # prevent OOM issues
+    runs-on: [self-hosted, large, noble, amd64]
     steps:
+      # Workshop (used by the agentic test) needs an LXD ZFS storage pool
+      - name: Load ZFS kernel module
+        run: |
+          uname -a
+          sudo apt-get update
+          sudo apt-get install -y zfsutils-linux
+          sudo modprobe zfs
+          lsmod | grep zfs
+
       - name: Run test
         uses: canonical/inference-snaps-dev/.github/actions/agentic-test@v2
         with:
