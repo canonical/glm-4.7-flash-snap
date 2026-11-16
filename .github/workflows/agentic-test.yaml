@@ -11,7 +11,7 @@ jobs:
     # GLM-4.7-Flash-30B-A3B Q4_K_M  can't fit (~18GB)
     # so we use a large self-hosted runner (32GB RAM) to
     # prevent OOM issues
-    runs-on: [self-hosted, large, noble, amd64]
+    runs-on: [amd64, large, noble, self-hosted]
     steps:
       # Workshop (used by the agentic test) needs an LXD ZFS storage pool
       - name: Load ZFS kernel module
